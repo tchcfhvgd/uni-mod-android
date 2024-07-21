@@ -53,6 +53,7 @@ jobs:
           haxelib git hxcpp https://github.com/mcagabe19-stuff/hxcpp
           haxelib git lime https://github.com/mcagabe19-stuff/lime
           haxelib install openfl
+          haxelib install hxdiscord_rpc
           haxelib install flixel 5.5.0
           haxelib install flixel-tools
           haxelib install flixel-ui
