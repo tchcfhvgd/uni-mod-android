@@ -637,6 +637,8 @@ class PlayState extends MusicBeatState
 		startCallback();
 		RecalculateRating();
 
+		addMobileControls(false);
+		
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 
