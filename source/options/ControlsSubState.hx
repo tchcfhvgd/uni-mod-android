@@ -62,6 +62,8 @@ class ControlsSubState extends MusicBeatSubstate
 	
 	public function new()
 	{
+		controls.isInSubstate = true;
+		
 		super();
 
 		#if DISCORD_ALLOWED
@@ -110,6 +112,8 @@ class ControlsSubState extends MusicBeatSubstate
 		add(text);
 
 		createTexts();
+
+		addVirtualPad(LEFT_FULL, A_B);
 	}
 
 	var lastID:Int = 0;
