@@ -1,6 +1,6 @@
 package mobile.substates;
 
-import flixel.FlxObject;
+import flixel.addons.ui.FlxUIButton;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.util.FlxGradient;
@@ -11,7 +11,7 @@ import flixel.ui.FlxButton as UIButton;
 
 class MobileControlSelectSubState extends MusicBeatSubstate
 {
-	var options:Array<String> = ['Pad-Right', 'Pad-Left', 'Pad-Custom', 'Hitbox', 'Keyboard'];
+	var options:Array<String> = ['Pad-Right', 'Pad-Left', 'Pad-Custom', 'Pad-Duo', 'Hitbox', 'Keyboard'];
 	var control:MobileControls;
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
@@ -22,7 +22,7 @@ class MobileControlSelectSubState extends MusicBeatSubstate
 	var ui:FlxCamera;
 	var curOption:Int = MobileControls.mode;
 	var buttonBinded:Bool = false;
-	var bindButton:TouchPadButton;
+	var bindButton:FlxButton;
 	var reset:UIButton;
 	var tweenieShit:Float = 0;
 	var keyboardText:FlxText;
@@ -96,8 +96,6 @@ class MobileControlSelectSubState extends MusicBeatSubstate
 
 		var exit = new UIButton(0, itemText.y - 25, "Exit & Save", () ->
 		{
-			if(options[curOption].toLowerCase().contains('pad'))
-				control.virtualPad.setExtrasDefaultPos();
 			if (options[curOption] == 'Pad-Extra')
 			{
 				var nuhuh = new FlxText(0, 0, FlxG.width / 2, 'Pad-Extra Is Just A Binding Option\nPlease Select A Different Option To Exit.');
@@ -106,13 +104,14 @@ class MobileControlSelectSubState extends MusicBeatSubstate
 				nuhuh.cameras = [ui];
 				add(nuhuh);
 				FlxTween.tween(nuhuh, {alpha: 0}, 3.4, {
-					ease: FlxEase.circOut,
+					ease: FlxEase.quadInOut,
 					onComplete: (twn:FlxTween) ->
 					{
 						nuhuh.destroy();
 						remove(nuhuh);
 					}
 				});
+				control.virtualPad.setExtrasDefaultPos();
 				return;
 			}
 			MobileControls.mode = curOption;
@@ -136,7 +135,6 @@ class MobileControlSelectSubState extends MusicBeatSubstate
 		reset = new UIButton(exit.x, exit.height + exit.y + 20, "Reset", () ->
 		{
 			changeOption(0); // realods the current control mode ig?
-			FlxG.sound.play(Paths.sound('cancelMenu'));
 		});
 		reset.color = FlxColor.RED;
 		reset.setGraphicSize(Std.int(reset.width) * 3);
@@ -177,49 +175,13 @@ class MobileControlSelectSubState extends MusicBeatSubstate
 			}
 			else
 			{
-				control.virtualPad.forEachAlive((button:TouchPadButton) ->
+				control.virtualPad.forEachAlive((button:FlxButton) ->
 				{
 					if (button.justPressed)
 						moveButton(TouchFunctions.touch, button);
 				});
 			}
-		control.virtualPad.forEachAlive((button:TouchPadButton) -> {
-			if(button != bindButton && buttonBinded){
-				bindButton.centerBounds();
-				button.bounds.immovable = true;
-				bindButton.bounds.immovable = false;
-				button.centerBounds();
-				FlxG.overlap(bindButton.bounds, button.bounds, function(a:Dynamic, b:Dynamic) { // these args dosen't work fuck them :/
-				bindButton.centerInBounds();
-				button.centerBounds();
-				bindButton.bounds.immovable = true;
-				button.bounds.immovable = false;
-				// trace('button${bindButton.tag} & button${button.tag} collided');
-			}, function(a:Dynamic, b:Dynamic){
-				if(!bindButton.bounds.immovable)
-				{
-					if(bindButton.bounds.x > button.bounds.x)
-						bindButton.bounds.x = button.bounds.x + button.bounds.width;
-					else
-						bindButton.bounds.x = button.bounds.x - button.bounds.width;
-
-					if(bindButton.bounds.y > button.bounds.y)
-						bindButton.bounds.y = button.bounds.y + button.bounds.height;
-					else if(bindButton.bounds.y != button.bounds.y)
-						bindButton.bounds.y = button.bounds.y - button.bounds.height;
-				}
-				return true;
-			});
-				/*FlxG.collide(bindButton.bounds, button.bounds, function(a:Dynamic, b:Dynamic) { // these args dosen't work fuck them :/
-					bindButton.centerInBounds();
-					button.centerBounds();
-					bindButton.bounds.immovable = true;
-					button.bounds.immovable = false;
-					trace('button${bindButton.tag} & button${button.tag} collided');
-				});*/
-			}
-		});
-	}
+		}
 
 		tweenieShit += 180 * elapsed;
 		keyboardText.alpha = 1 - Math.sin((Math.PI * tweenieShit) / 180);
@@ -227,7 +189,7 @@ class MobileControlSelectSubState extends MusicBeatSubstate
 		super.update(elapsed);
 	}
 
-	function changeControls(?type:Int, ?extraMode:Bool = false)
+	function changeControls(?type:Int = null, ?extraMode:Bool = false)
 	{
 		if (type == null)
 			type = curOption;
@@ -242,7 +204,6 @@ class MobileControlSelectSubState extends MusicBeatSubstate
 
 	function changeOption(change:Int)
 	{
-		FlxG.sound.play(Paths.sound('scrollMenu'));
 		curOption += change;
 
 		if (curOption < 0)
@@ -262,13 +223,17 @@ class MobileControlSelectSubState extends MusicBeatSubstate
 				changeControls();
 			case 4:
 				reset.visible = false;
-				keyboardText.revive();
+				keyboardText.kill();
 				changeControls();
 			case 5:
+				reset.visible = false;
+				keyboardText.revive();
+				changeControls();
+			case 6:
 				reset.visible = true;
 				keyboardText.kill();
 				changeControls(0, true);
-				control.virtualPad.forEachAlive((button:TouchPadButton) ->
+				control.virtualPad.forEachAlive((button:FlxButton) ->
 				{
 					var ignore = ['G', 'S'];
 					if (!ignore.contains(button.tag.toUpperCase()))
@@ -326,12 +291,12 @@ class MobileControlSelectSubState extends MusicBeatSubstate
 			func();
 	}
 
-	function moveButton(touch:FlxTouch, button:TouchPadButton):Void
+	function moveButton(touch:FlxTouch, button:FlxButton):Void
 	{
 		bindButton = button;
-		buttonBinded = bindButton == null ? false : true;
 		bindButton.x = touch.x - Std.int(bindButton.width / 2);
 		bindButton.y = touch.y - Std.int(bindButton.height / 2);
+		buttonBinded = true;
 		updatePosText();
 	}
 }
