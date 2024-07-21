@@ -5,10 +5,11 @@ import flixel.system.macros.FlxMacroUtil;
 /**
  * A high-level list of unique values for mobile input buttons.
  * Maps enum values and strings to unique integer codes
- * @author Karim Akra
+ * @author Karim Akra & Lily(mcagabe19)
  */
 @:runtimeValue
-enum abstract FlxMobileInputID(Int) from Int to Int {
+enum abstract FlxMobileInputID(Int) from Int to Int
+{
 	public static var fromStringMap(default, null):Map<String, FlxMobileInputID> = FlxMacroUtil.buildMap("mobile.flixel.input.FlxMobileInputID");
 	public static var toStringMap(default, null):Map<FlxMobileInputID, String> = FlxMacroUtil.buildMap("mobile.flixel.input.FlxMobileInputID", true);
 	// Nothing & Anything
@@ -22,53 +23,42 @@ enum abstract FlxMobileInputID(Int) from Int to Int {
 	var E = 5;
 	var F = 6;
 	var G = 7;
-	var H = 8;
-	var I = 9;
-	var J = 10;
-	var K = 11;
-	var L = 12;
-	var M = 13;
-	var N = 14;
-	var O = 15;
-	var P = 16;
-	var Q = 17;
-	var R = 18;
-	var S = 19;
-	var T = 20;
-	var U = 21;
-	var V = 22;
-	var W = 23;
-	var X = 24;
-	var Y = 25;
-	var Z = 26;
+	var P = 8;
+	var S = 9;
+	var V = 10;
+	var X = 11;
+	var Y = 12;
+	var Z = 13;
 	// VPAD Buttons
-	var UP = 27;
-	var UP2 = 28;
-	var DOWN = 29;
-	var DOWN2 = 30;
-	var LEFT = 31;
-	var LEFT2 = 32;
-	var RIGHT = 33;
-	var RIGHT2 = 34;
+	var UP = 14;
+	var UP2 = 15;
+	var DOWN = 16;
+	var DOWN2 = 17;
+	var LEFT = 18;
+	var LEFT2 = 19;
+	var RIGHT = 20;
+	var RIGHT2 = 21;
 	// HITBOX
-	var hitboxUP = 35;
-	var hitboxDOWN = 36;
-	var hitboxLEFT = 37;
-	var hitboxRIGHT = 38;
+	var hitboxUP = 22;
+	var hitboxDOWN = 23;
+	var hitboxLEFT = 24;
+	var hitboxRIGHT = 25;
 	// PlayState Releated
-	var noteUP = 39;
-	var noteDOWN = 40;
-	var noteLEFT = 41;
-	var noteRIGHT = 42;
+	var noteUP = 26;
+	var noteDOWN = 27;
+	var noteLEFT = 28;
+	var noteRIGHT = 29;
 
 	@:from
-	public static inline function fromString(s:String) {
+	public static inline function fromString(s:String)
+	{
 		s = s.toUpperCase();
 		return fromStringMap.exists(s) ? fromStringMap.get(s) : NONE;
 	}
 
 	@:to
-	public inline function toString():String {
+	public inline function toString():String
+	{
 		return toStringMap.get(this);
 	}
 }
