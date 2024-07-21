@@ -97,6 +97,9 @@ class OptionsState extends MusicBeatState
 	override function closeSubState() {
 		super.closeSubState();
 		ClientPrefs.saveSettings();
+		controls.isInSubstate = false;
+        removeVirtualPad();
+		addVirtualPad(UP_DOWN, A_B_C);
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Options Menu", null);
 		#end
