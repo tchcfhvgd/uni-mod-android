@@ -30,6 +30,8 @@ class FlashingState extends MusicBeatState
 		enter.antialiasing = true;
 		enter.scale.set(0.4, 0.4);
 		add(enter);
+
+		addVirtualPad(NONE, A);
 	}
 	override function update(elapsed:Float)
 	{
