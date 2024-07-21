@@ -96,7 +96,17 @@ class TitleState extends MusicBeatState
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 
-        if (controls.ACCEPT && !transitioning)
+        var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
+		#if FLX_TOUCH
+		for (touch in FlxG.touches.list)
+		{
+			if (touch.justPressed)
+			{
+				pressedEnter = true;
+			}
+		}
+		#end
+	if (pressedEnter && !transitioning)
 		{
             FlxG.sound.play(Paths.sound('confirmMenu'), ClientPrefs.data.soundVolume);
             if (ClientPrefs.data.flashing) FlxG.camera.flash(FlxColor.WHITE, 1);
