@@ -15,6 +15,7 @@ class OptionsState extends MusicBeatState
 	public static var onPlayState:Bool = false;
 
 	function openSelectedSubstate(label:String) {
+		removeVirtualPad();
 		switch(label) {
 			case 'input':
 				openSubState(new options.ControlsSubState());
