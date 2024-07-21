@@ -7,6 +7,8 @@ import backend.PsychCamera;
 
 class MusicBeatState extends FlxUIState
 {
+	public static var instance:MusicBeatState;
+
 	private var curSection:Int = 0;
 	private var stepsToDo:Int = 0;
 
@@ -26,9 +28,10 @@ class MusicBeatState extends FlxUIState
 	public var camControls:FlxCamera;
 	public var vpadCam:FlxCamera;
 
-	public function addVirtualPad(DPad:String, Action:String)
+	public function addVirtualPad(DPad:FlxDPadMode, Action:FlxActionMode)
 	{
 		virtualPad = new FlxVirtualPad(DPad, Action);
+		virtualPad.alpha = ClientPrefs.data.controlsAlpha;
 		add(virtualPad);
 	}
 
@@ -48,6 +51,7 @@ class MusicBeatState extends FlxUIState
 
 		mobileControls.cameras = [camControls];
 		mobileControls.visible = false;
+		mobileControls.alpha = ClientPrefs.data.controlsAlpha;
 		add(mobileControls);
 	}
 
@@ -84,10 +88,12 @@ class MusicBeatState extends FlxUIState
 			mobileControls = null;
 		}
 	}
-	
+
 	var _psychCameraInitialized:Bool = false;
 
 	override function create() {
+		instance = this;
+
 		var skip:Bool = FlxTransitionableState.skipNextTransOut;
 		#if MODS_ALLOWED Mods.updatedOnState = false; #end
 
