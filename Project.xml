@@ -20,8 +20,8 @@
 	
 	<!-- ______________________ PSYCH ENGINE CUSTOMIZATION ______________________ -->
 
-	<define name="LUA_ALLOWED" if="desktop" />
-	<define name="DISCORD_ALLOWED" />
+	<define name="LUA_ALLOWED" if="desktop || mobile" />
+	<define name="DISCORD_ALLOWED" if="desktop"/>
 	
 	<section if="officialBuild">
 		<!-- disabled but im keeping them here just in case -->
