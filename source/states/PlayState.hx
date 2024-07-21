@@ -660,6 +660,11 @@ class PlayState extends MusicBeatState
 		cacheCountdown();
 		cachePopUpScore();
 
+		#if (!android)
+		addVirtualPad(NONE, P);
+    	addVirtualPadCamera(false);
+		#end
+		
 		super.create();
 		Paths.clearUnusedMemory();
 
