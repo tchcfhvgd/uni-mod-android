@@ -1,7 +1,7 @@
 package mobile.states;
 
 #if mobile
-import TitleState;
+import states.InitState;
 import flixel.FlxG;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
@@ -81,7 +81,7 @@ class CopyState extends MusicBeatState
 		}
 		else
 		{
-			MusicBeatState.switchState(new TitleState());
+			MusicBeatState.switchState(new InitState());
 		}
 
 		super.create();
