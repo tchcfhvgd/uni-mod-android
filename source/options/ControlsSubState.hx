@@ -41,9 +41,7 @@ class ControlsSubState extends MusicBeatSubstate
 		[false],
 		[false, 'DEBUG'],
 		[false, 'Key 1', 'debug_1', 'Debug Key #1'],
-		[false, 'Key 2', 'debug_2', 'Debug Key #2'],
-		[false, 'WINDOW'],
-		[false, 'Fullscreen', 'fullscreen', 'Fullscreen Toggel']
+		[false, 'Key 2', 'debug_2', 'Debug Key #2']
 	];
 	var curOptions:Array<Int>;
 	var curOptionsValid:Array<Int>;
@@ -325,7 +323,7 @@ class ControlsSubState extends MusicBeatSubstate
 					binding = true;
 					holdingEsc = 0;
 					ClientPrefs.toggleVolumeKeys(false);
-					FlxG.sound.play(Paths.sound('scrollMenu'));
+					FlxG.sound.play(Paths.sound('scrollMenu'), ClientPrefs.data.soundVolume);
 				}
 				else
 				{
@@ -336,7 +334,7 @@ class ControlsSubState extends MusicBeatSubstate
 					createTexts();
 					curSelected = lastSel;
 					updateText();
-					FlxG.sound.play(Paths.sound('cancelMenu'));
+					FlxG.sound.play(Paths.sound('cancelMenu'), ClientPrefs.data.soundVolume);
 				}
 			}
 		}
@@ -349,7 +347,7 @@ class ControlsSubState extends MusicBeatSubstate
 				holdingEsc += elapsed;
 				if(holdingEsc > 0.5)
 				{
-					FlxG.sound.play(Paths.sound('cancelMenu'));
+					FlxG.sound.play(Paths.sound('cancelMenu'), ClientPrefs.data.soundVolume);
 					closeBinding();
 				}
 			}
@@ -361,7 +359,7 @@ class ControlsSubState extends MusicBeatSubstate
 					ClientPrefs.keyBinds.get(curOption[2])[altNum] = NONE;
 					ClientPrefs.clearInvalidKeys(curOption[2]);
 					updateBind(Math.floor(curSelected * 2) + altNum, onKeyboardMode ? InputFormatter.getKeyName(NONE) : InputFormatter.getGamepadName(NONE));
-					FlxG.sound.play(Paths.sound('cancelMenu'));
+					FlxG.sound.play(Paths.sound('cancelMenu'), ClientPrefs.data.soundVolume);
 					closeBinding();
 				}
 			}
@@ -455,7 +453,7 @@ class ControlsSubState extends MusicBeatSubstate
 						}
 						updateBind(Math.floor(curSelected * 2) + n, key);
 					}
-					FlxG.sound.play(Paths.sound('confirmMenu'));
+					FlxG.sound.play(Paths.sound('confirmMenu'), ClientPrefs.data.soundVolume);
 					closeBinding();
 				}
 			}
@@ -510,7 +508,7 @@ class ControlsSubState extends MusicBeatSubstate
 		});
 
 		updateAlt();
-		FlxG.sound.play(Paths.sound('scrollMenu'));
+		FlxG.sound.play(Paths.sound('scrollMenu'), ClientPrefs.data.soundVolume);
 	}
 
 	var colorTween:FlxTween;
@@ -531,7 +529,7 @@ class ControlsSubState extends MusicBeatSubstate
 		if(doSwap)
 		{
 			curAlt = !curAlt;
-			FlxG.sound.play(Paths.sound('scrollMenu'));
+			FlxG.sound.play(Paths.sound('scrollMenu'), ClientPrefs.data.soundVolume);
 		}
 		selectSpr.sprTracker = grpBlacks.members[Math.floor(curSelected * 2) + (curAlt ? 1 : 0)];
 		selectSpr.visible = (selectSpr.sprTracker != null);
