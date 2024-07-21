@@ -87,6 +87,8 @@ class OptionsState extends MusicBeatState
 		changeSelection();
 		ClientPrefs.saveSettings();
 
+		addVirtualPad(UP_DOWN, A_B_C);
+		
 		super.create();
 	}
 
@@ -106,6 +108,12 @@ class OptionsState extends MusicBeatState
 		}
 		if (controls.UI_DOWN_P) {
 			changeSelection(1);
+		}
+
+		if (virtualPad.buttonC.justPressed || FlxG.keys.justPressed.CONTROL && controls.mobileC) {
+			persistentUpdate = false;
+
+			openSubState(new MobileControlSelectSubState());
 		}
 
 		if (controls.BACK) {
