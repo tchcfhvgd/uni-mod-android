@@ -1,59 +1,79 @@
 package mobile.flixel;
 
-import mobile.objects.TouchButton;
-import haxe.io.Path;
-import flixel.graphics.frames.FlxTileFrames;
-import mobile.flixel.input.FlxMobileInputManager;
-import flixel.math.FlxPoint;
-import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.FlxG;
 import flixel.graphics.FlxGraphic;
-import openfl.utils.Assets;
-import openfl.utils.AssetType;
+import flixel.graphics.frames.FlxTileFrames;
+import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxPoint;
+import flixel.util.FlxDestroyUtil;
+import mobile.flixel.FlxButton;
 import openfl.display.BitmapData;
+import openfl.utils.Assets;
+
+enum FlxDPadMode
+{
+	UP_DOWN;
+	LEFT_RIGHT;
+	LEFT_FULL;
+	RIGHT_FULL;
+	BOTH_FULL;
+	DIALOGUE_PORTRAIT_EDITOR;
+	MENU_CHARACTER_EDITOR;
+	NONE;
+}
+
+enum FlxActionMode
+{
+	A;
+	B;
+	P;
+	A_B;
+	A_B_C;
+	A_B_E;
+	A_B_X_Y;
+	A_B_C_X_Y;
+	A_B_C_X_Y_Z;
+	A_B_C_D_V_X_Y_Z;
+	CHART_EDITOR;
+	CHARACTER_EDITOR;
+	DIALOGUE_PORTRAIT_EDITOR;
+	MENU_CHARACTER_EDITOR;
+	NONE;
+}
 
 /**
  * A gamepad.
  * It's easy to customize the layout.
  *
- * @author Ka Wing Chin, Mihai Alexandru and Karim Akra
+ * @author Ka Wing Chin
+ * @author Mihai Alexandru (M.A. Jigsaw)
  */
-class FlxVirtualPad extends FlxMobileInputManager<TouchPadButton> {
-	public var buttonLeft:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.LEFT, FlxMobileInputID.noteLEFT]);
-	public var buttonUp:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.UP, FlxMobileInputID.noteUP]);
-	public var buttonRight:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.RIGHT, FlxMobileInputID.noteRIGHT]);
-	public var buttonDown:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.DOWN, FlxMobileInputID.noteDOWN]);
-	public var buttonLeft2:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.LEFT2, FlxMobileInputID.noteLEFT]);
-	public var buttonUp2:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.UP2, FlxMobileInputID.noteUP]);
-	public var buttonRight2:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.RIGHT2, FlxMobileInputID.noteRIGHT]);
-	public var buttonDown2:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.DOWN2, FlxMobileInputID.noteDOWN]);
-	public var buttonA:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.A]);
-	public var buttonB:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.B]);
-	public var buttonC:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.C]);
-	public var buttonD:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.D]);
-	public var buttonE:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.E]);
-	public var buttonF:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.F]);
-	public var buttonG:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.G]);
-	public var buttonH:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.H]);
-	public var buttonI:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.I]);
-	public var buttonJ:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.J]);
-	public var buttonK:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.K]);
-	public var buttonL:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.L]);
-	public var buttonM:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.M]);
-	public var buttonN:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.N]);
-	public var buttonO:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.O]);
-	public var buttonP:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.P]);
-	public var buttonQ:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.Q]);
-	public var buttonR:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.R]);
-	public var buttonS:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.S]);
-	public var buttonT:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.T]);
-	public var buttonU:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.U]);
-	public var buttonV:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.V]);
-	public var buttonW:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.W]);
-	public var buttonX:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.X]);
-	public var buttonY:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.Y]);
-	public var buttonZ:TouchPadButton = new TouchPadButton(0, 0, [FlxMobileInputID.Z]);
-	public var buttonExtra:TouchPadButton = new TouchPadButton(0, 0);
-	public var buttonExtra2:TouchPadButton = new TouchPadButton(0, 0);
+class FlxVirtualPad extends FlxTypedSpriteGroup<FlxButton>
+{
+	public var buttonLeft:FlxButton = new FlxButton(0, 0);
+	public var buttonUp:FlxButton = new FlxButton(0, 0);
+	public var buttonRight:FlxButton = new FlxButton(0, 0);
+	public var buttonDown:FlxButton = new FlxButton(0, 0);
+
+	public var buttonLeft2:FlxButton = new FlxButton(0, 0);
+	public var buttonUp2:FlxButton = new FlxButton(0, 0);
+	public var buttonRight2:FlxButton = new FlxButton(0, 0);
+	public var buttonDown2:FlxButton = new FlxButton(0, 0);
+
+	public var buttonA:FlxButton = new FlxButton(0, 0);
+	public var buttonB:FlxButton = new FlxButton(0, 0);
+	public var buttonP:FlxButton = new FlxButton(0, 0);
+	public var buttonC:FlxButton = new FlxButton(0, 0);
+	public var buttonD:FlxButton = new FlxButton(0, 0);
+	public var buttonE:FlxButton = new FlxButton(0, 0);
+	public var buttonF:FlxButton = new FlxButton(0, 0);
+	public var buttonG:FlxButton = new FlxButton(0, 0);
+	public var buttonV:FlxButton = new FlxButton(0, 0);
+	public var buttonX:FlxButton = new FlxButton(0, 0);
+	public var buttonY:FlxButton = new FlxButton(0, 0);
+	public var buttonZ:FlxButton = new FlxButton(0, 0);
+
+	public var buttonEx:FlxButton = new FlxButton(0, 0);
 
 	/**
 	 * Create a gamepad.
@@ -61,152 +81,179 @@ class FlxVirtualPad extends FlxMobileInputManager<TouchPadButton> {
 	 * @param   DPadMode     The D-Pad mode. `LEFT_FULL` for example.
 	 * @param   ActionMode   The action buttons mode. `A_B_C` for example.
 	 */
-	public function new(DPad:String, Action:String, ?Extra:ExtraActions = NONE) {
+	public function new(DPad:FlxDPadMode, Action:FlxActionMode, ?Extra:Bool = false):Void
+	{
 		super();
 
-		if (DPad != "NONE") {
-			if (!MobileData.dpadModes.exists(DPad))
-				throw 'The virtualPad dpadMode "$DPad" doesn\'t exists.';
-			for (buttonData in MobileData.dpadModes.get(DPad).buttons) {
-				Reflect.setField(this, buttonData.button,
-					createButton(buttonData.x, buttonData.y, buttonData.graphic, CoolUtil.colorFromString(buttonData.color),
-					Reflect.getProperty(this, buttonData.button).IDs));
-				add(Reflect.field(this, buttonData.button));
-			}
+		switch (DPad)
+		{
+			case UP_DOWN:
+				add(buttonUp = createButton(0, FlxG.height - 258, 'up', 0x00FF00));
+				add(buttonDown = createButton(0, FlxG.height - 131, 'down', 0x00FFFF));
+			case LEFT_RIGHT:
+				add(buttonLeft = createButton(0, FlxG.height - 131, 'left', 0xFF00FF));
+				add(buttonRight = createButton(127, FlxG.height - 131, 'right', 0xFF0000));
+			case LEFT_FULL:
+				add(buttonUp = createButton(105, FlxG.height - 356, 'up', 0x00FF00));
+				add(buttonLeft = createButton(0, FlxG.height - 246, 'left', 0xFF00FF));
+				add(buttonRight = createButton(207, FlxG.height - 246, 'right', 0xFF0000));
+				add(buttonDown = createButton(105, FlxG.height - 131, 'down', 0x00FFFF));
+			case RIGHT_FULL:
+				add(buttonUp = createButton(FlxG.width - 258, FlxG.height - 404, 'up', 0x00FF00));
+				add(buttonLeft = createButton(FlxG.width - 384, FlxG.height - 305, 'left', 0xFF00FF));
+				add(buttonRight = createButton(FlxG.width - 132, FlxG.height - 305, 'right', 0xFF0000));
+				add(buttonDown = createButton(FlxG.width - 258, FlxG.height - 197, 'down', 0x00FFFF));
+			case BOTH_FULL:
+				add(buttonUp = createButton(105, FlxG.height - 356, 'up', 0x00FF00));
+				add(buttonLeft = createButton(0, FlxG.height - 246, 'left', 0xFF00FF));
+				add(buttonRight = createButton(207, FlxG.height - 246, 'right', 0xFF0000));
+				add(buttonDown = createButton(105, FlxG.height - 131, 'down', 0x00FFFF));
+				add(buttonUp2 = createButton(FlxG.width - 258, FlxG.height - 404, 'up', 0x00FF00));
+				add(buttonLeft2 = createButton(FlxG.width - 384, FlxG.height - 305, 'left', 0xFF00FF));
+				add(buttonRight2 = createButton(FlxG.width - 132, FlxG.height - 305, 'right', 0xFF0000));
+				add(buttonDown2 = createButton(FlxG.width - 258, FlxG.height - 197, 'down', 0xA100FFFF));
+			case DIALOGUE_PORTRAIT_EDITOR:
+				add(buttonUp = createButton(105, FlxG.height - 356, 'up', 0x00FF00));
+				add(buttonLeft = createButton(0, FlxG.height - 246, 'left', 0xFF00FF));
+				add(buttonRight = createButton(207, FlxG.height - 246, 'right', 0xFF0000));
+				add(buttonDown = createButton(105, FlxG.height - 131, 'down', 0x00FFFF));
+				add(buttonUp2 = createButton(105, 0, 'up', 0xFF12FA05));
+				add(buttonLeft2 = createButton(0, 102, 'left', 0xFFC24B99));
+				add(buttonRight2 = createButton(207, 102, 'right', 0xFFF9393F));
+				add(buttonDown2 = createButton(105, 210, 'down', 0xFF00FFFF));
+			case MENU_CHARACTER_EDITOR:
+				add(buttonUp = createButton(105, 0, 'up', 0x00FF00));
+				add(buttonLeft = createButton(0, 102, 'left', 0xFF00FF));
+				add(buttonRight = createButton(207, 102, 'right', 0xFF0000));
+				add(buttonDown = createButton(105, 210, 'down', 0x00FFFF));
+			case NONE: // do nothing
 		}
 
-		if (Action != "NONE") {
-			if (!MobileData.actionModes.exists(Action))
-				throw 'The virtualPad actionMode "$Action" doesn\'t exists.';
-			for (buttonData in MobileData.actionModes.get(Action).buttons) {
-				Reflect.setField(this, buttonData.button,
-					createButton(buttonData.x, buttonData.y, buttonData.graphic, CoolUtil.colorFromString(buttonData.color),
-					Reflect.getProperty(this, buttonData.button).IDs));
-				add(Reflect.field(this, buttonData.button));
-			}
+		switch (Action)
+		{
+			case A:
+				add(buttonA = createButton(FlxG.width - 132, FlxG.height - 131, 'a', 0xFF0000));
+			case B:
+				add(buttonB = createButton(FlxG.width - 132, FlxG.height - 131, 'b', 0xFFCB00));
+			case P:
+				add(buttonP = createButton(FlxG.width - 132, 0, 'p', 0xFFCB00));
+			case A_B:
+				add(buttonB = createButton(FlxG.width - 262, FlxG.height - 131, 'b', 0xFFCB00));
+				add(buttonA = createButton(FlxG.width - 132, FlxG.height - 131, 'a', 0xFF0000));
+			case A_B_C:
+				add(buttonC = createButton(FlxG.width - 392, FlxG.height - 131, 'c', 0x44FF00));
+				add(buttonB = createButton(FlxG.width - 262, FlxG.height - 131, 'b', 0xFFCB00));
+				add(buttonA = createButton(FlxG.width - 132, FlxG.height - 131, 'a', 0xFF0000));
+			case A_B_E:
+				add(buttonE = createButton(FlxG.width - 392, FlxG.height - 131, 'e', 0xFF7D00));
+				add(buttonB = createButton(FlxG.width - 262, FlxG.height - 131, 'b', 0xFFCB00));
+				add(buttonA = createButton(FlxG.width - 132, FlxG.height - 131, 'a', 0xFF0000));
+			case A_B_X_Y:
+				add(buttonX = createButton(FlxG.width - 522, FlxG.height - 131, 'x', 0x99062D));
+				add(buttonB = createButton(FlxG.width - 262, FlxG.height - 131, 'b', 0xFFCB00));
+				add(buttonY = createButton(FlxG.width - 392, FlxG.height - 131, 'y', 0x4A35B9));
+				add(buttonA = createButton(FlxG.width - 132, FlxG.height - 131, 'a', 0xFF0000));
+			case A_B_C_X_Y:
+				add(buttonC = createButton(FlxG.width - 392, FlxG.height - 131, 'c', 0x44FF00));
+				add(buttonX = createButton(FlxG.width - 262, FlxG.height - 251, 'x', 0x99062D));
+				add(buttonB = createButton(FlxG.width - 262, FlxG.height - 131, 'b', 0xFFCB00));
+				add(buttonY = createButton(FlxG.width - 132, FlxG.height - 251, 'y', 0x4A35B9));
+				add(buttonA = createButton(FlxG.width - 132, FlxG.height - 131, 'a', 0xFF0000));
+			case A_B_C_X_Y_Z:
+				add(buttonX = createButton(FlxG.width - 392, FlxG.height - 251, 'x', 0x99062D));
+				add(buttonC = createButton(FlxG.width - 392, FlxG.height - 131, 'c', 0x44FF00));
+				add(buttonY = createButton(FlxG.width - 262, FlxG.height - 251, 'y', 0x4A35B9));
+				add(buttonB = createButton(FlxG.width - 262, FlxG.height - 131, 'b', 0xFFCB00));
+				add(buttonZ = createButton(FlxG.width - 132, FlxG.height - 251, 'z', 0xCCB98E));
+				add(buttonA = createButton(FlxG.width - 132, FlxG.height - 131, 'a', 0xFF0000));
+			case A_B_C_D_V_X_Y_Z:
+				add(buttonV = createButton(FlxG.width - 522, FlxG.height - 251, 'v', 0x49A9B2));
+				add(buttonD = createButton(FlxG.width - 522, FlxG.height - 131, 'd', 0x0078FF));
+				add(buttonX = createButton(FlxG.width - 392, FlxG.height - 251, 'x', 0x99062D));
+				add(buttonC = createButton(FlxG.width - 392, FlxG.height - 131, 'c', 0x44FF00));
+				add(buttonY = createButton(FlxG.width - 262, FlxG.height - 251, 'y', 0x4A35B9));
+				add(buttonB = createButton(FlxG.width - 262, FlxG.height - 131, 'b', 0xFFCB00));
+				add(buttonZ = createButton(FlxG.width - 132, FlxG.height - 251, 'z', 0xCCB98E));
+				add(buttonA = createButton(FlxG.width - 132, FlxG.height - 131, 'a', 0xFF0000));
+			case CHART_EDITOR:
+				add(buttonUp2 = createButton(FlxG.width - 652, FlxG.height - 251, 'up', 0x00FF00));
+				add(buttonDown2 = createButton(FlxG.width - 652, FlxG.height - 131, 'down', 0x00FFFF));
+				add(buttonF = createButton(FlxG.width - 132, FlxG.height - 371, 'f', 0xB1FC00));
+				add(buttonG = createButton(FlxG.width - 262, FlxG.height - 371, 'g', 0x3D3722));
+				add(buttonV = createButton(FlxG.width - 522, FlxG.height - 251, 'v', 0x49A9B2));
+				add(buttonD = createButton(FlxG.width - 522, FlxG.height - 131, 'd', 0x0078FF));
+				add(buttonX = createButton(FlxG.width - 392, FlxG.height - 251, 'x', 0x99062D));
+				add(buttonC = createButton(FlxG.width - 392, FlxG.height - 131, 'c', 0x44FF00));
+				add(buttonY = createButton(FlxG.width - 262, FlxG.height - 251, 'y', 0x4A35B9));
+				add(buttonB = createButton(FlxG.width - 262, FlxG.height - 131, 'b', 0xFFCB00));
+				add(buttonZ = createButton(FlxG.width - 132, FlxG.height - 251, 'z', 0xCCB98E));
+				add(buttonA = createButton(FlxG.width - 132, FlxG.height - 131, 'a', 0xFF0000));
+			case CHARACTER_EDITOR:
+				add(buttonV = createButton(FlxG.width - 522, FlxG.height - 251, 'v', 0x49A9B2));
+				add(buttonD = createButton(FlxG.width - 522, FlxG.height - 131, 'd', 0x0078FF));
+				add(buttonX = createButton(FlxG.width - 392, FlxG.height - 251, 'x', 0x99062D));
+				add(buttonC = createButton(FlxG.width - 392, FlxG.height - 131, 'c', 0x44FF00));
+				add(buttonG = createButton(FlxG.width - 653, FlxG.height - 131, 'g', 0x3D3722));
+				add(buttonY = createButton(FlxG.width - 262, FlxG.height - 251, 'y', 0x4A35B9));
+				add(buttonB = createButton(FlxG.width - 262, FlxG.height - 131, 'b', 0xFFCB00));
+				add(buttonZ = createButton(FlxG.width - 132, FlxG.height - 251, 'z', 0xCCB98E));
+				add(buttonA = createButton(FlxG.width - 132, FlxG.height - 131, 'a', 0xFF0000));
+			case DIALOGUE_PORTRAIT_EDITOR:
+				add(buttonX = createButton(FlxG.width - 392, 4, 'x', 0x99062D));
+				add(buttonC = createButton(FlxG.width - 392, 129, 'c', 0x44FF00));
+				add(buttonY = createButton(FlxG.width - 262, 4, 'y', 0x4A35B9));
+				add(buttonB = createButton(FlxG.width - 262, 129, 'b', 0xFFCB00));
+				add(buttonZ = createButton(FlxG.width - 132, 4, 'z', 0xCCB98E));
+				add(buttonA = createButton(FlxG.width - 132, 129, 'a', 0xFF0000));
+			case MENU_CHARACTER_EDITOR:
+				add(buttonC = createButton(FlxG.width - 392, 4, 'c', 0x44FF00));
+				add(buttonB = createButton(FlxG.width - 262, 4, 'b', 0xFFCB00));
+				add(buttonA = createButton(FlxG.width - 132, 4, 'a', 0xFF0000));
+			case NONE: // do nothing
 		}
 
-		switch (Extra) {
-			case SINGLE:
-				add(buttonExtra = createButton(0, FlxG.height - 137, 's', 0xFF0066FF));
-				setExtrasPos();
-			case DOUBLE:
-				add(buttonExtra = createButton(0, FlxG.height - 137, 's', 0xFF0066FF));
-				add(buttonExtra2 = createButton(FlxG.width - 132, FlxG.height - 137, 'g', 0xA6FF00));
-				setExtrasPos();
-			case NONE: // nothing
-		}
+		if (Extra) add(buttonEx = createButton((DPad == LEFT_FULL) ? 1149 : 0, 589, 'g', 0x3D3722));
 
-		alpha = ClientPrefs.data.controlsAlpha;
 		scrollFactor.set();
-		updateTrackedButtons();
 	}
 
-	override function update(elapsed:Float)
+	/**
+	 * Clean up memory.
+	 */
+	override public function destroy():Void
 	{
-		/*
-		forEachAlive((button:TouchPadButton) -> {
-			if(!button.isOnScreen(button.camera))
-			{
-				if(button.x < 0)
-					button.x = 0;
-				if(button.y < 0)
-					button.y = 0;
-				if(button.x > FlxG.width - button.frameWidth)
-					button.x = FlxG.width - button.frameWidth;
-				if(button.y > FlxG.height - button.frameHeight)
-					button.y = FlxG.height - button.frameHeight;
-			}
-		});
-		*/
-		super.update(elapsed);
-	}
-
-	override public function destroy() {
 		super.destroy();
-
 		for (field in Reflect.fields(this))
-			if (Std.isOfType(Reflect.field(this, field), TouchPadButton))
+			if (Std.isOfType(Reflect.field(this, field), FlxButton))
 				Reflect.setField(this, field, FlxDestroyUtil.destroy(Reflect.field(this, field)));
 	}
 
-	public function setExtrasDefaultPos() {
-		var int:Int = 0;
+	private function createButton(X:Float, Y:Float, Graphic:String, Color:Int = 0xFFFFFF):FlxButton
+	{
+		var graphic:FlxGraphic;
 
-		if (MobileControls.save.data.extraData == null)
-			MobileControls.save.data.extraData = new Array();
+		final path:String = 'shared:assets/shared/images/virtualpad/$Graphic.png';
+		#if MODS_ALLOWED
+		final modsPath:String = Paths.modsImages('virtualpad/$Graphic');
+		if(sys.FileSystem.exists(modsPath))
+			graphic = FlxGraphic.fromBitmapData(BitmapData.fromFile(modsPath));
+		else #end if(Assets.exists(path))
+			graphic = FlxGraphic.fromBitmapData(Assets.getBitmapData(path));
+		else
+			graphic = FlxGraphic.fromBitmapData(Assets.getBitmapData('shared:assets/shared/images/virtualpad/default.png'));
 
-		for (button in Reflect.fields(this)) {
-			if (button.toLowerCase().contains('extra') && Std.isOfType(Reflect.field(this, button), TouchPadButton)) {
-				var daButton = Reflect.field(this, button);
-				if (MobileControls.save.data.extraData[int] == null)
-					MobileControls.save.data.extraData.push(FlxPoint.get(daButton.x, daButton.y));
-				else
-					MobileControls.save.data.extraData[int] = FlxPoint.get(daButton.x, daButton.y);
-				++int;
-			}
-		}
-		MobileControls.save.flush();
-	}
-
-	public function setExtrasPos() {
-		var int:Int = 0;
-		if (MobileControls.save.data.extraData == null)
-			setExtrasDefaultPos();
-
-		for (button in Reflect.fields(this)) {
-			if (button.toLowerCase().contains('extra') && Std.isOfType(Reflect.field(this, button), TouchPadButton)) {
-				if(MobileControls.save.data.extraData.length > int)
-					setExtrasDefaultPos();
-				var daButton = Reflect.field(this, button);
-				daButton.x = MobileControls.save.data.extraData[int].x;
-				daButton.y = MobileControls.save.data.extraData[int].y;
-				int++;
-			}
-		}
-	}
-
-	private function createButton(X:Float, Y:Float, Graphic:String, ?Color:FlxColor = 0xFFFFFF, ?IDs:Array<FlxMobileInputID>):TouchPadButton {
-		var button = new TouchPadButton(X, Y, IDs, Graphic.toUpperCase());
-		button.bounds.makeGraphic(Std.int(button.width - 50), Std.int(button.height - 50), FlxColor.TRANSPARENT);
-		button.centerBounds();
+		var button:FlxButton = new FlxButton(X, Y);
+		button.frames = FlxTileFrames.fromGraphic(graphic, FlxPoint.get(Std.int(graphic.width / 2), graphic.height));
+		button.solid = false;
+		button.immovable = true;
+		button.moves = false;
+		button.scrollFactor.set();
 		button.color = Color;
-		button.parentAlpha = this.alpha;
+		button.antialiasing = ClientPrefs.globalAntialiasing;
+		button.alpha = ClientPrefs.mobileCAlpha;
+		#if FLX_DEBUG
+		button.ignoreDrawDebug = true;
+		#end
 		return button;
-	}
-
-	override function set_alpha(Value):Float {
-		forEachAlive((button:TouchPadButton) -> {
-			button.parentAlpha = Value;
-		});
-		super.set_alpha(Value);
-		return Value;
-	}
-}
-
-class TouchPadButton extends TouchButton
-{
-	public function new(X:Float = 0, Y:Float = 0, ?IDs:Array<FlxMobileInputID>, ?labelGraphic:String){
-		super(X, Y, IDs);
-		if(labelGraphic != null){
-			label = new FlxSprite();
-			loadGraphic(Paths.image('touchpad/bg', "mobile"));
-			label.loadGraphic(Paths.image('touchpad/$labelGraphic', "mobile"));
-			scale.set(0.243, 0.243);
-			updateHitbox();
-			updateLabelPosition();
-			// statusAlphas = [ClientPrefs.data.controlsAlpha, ClientPrefs.data.controlsAlpha - 0.05, ClientPrefs.data.controlsAlpha-0.12];
-			statusAlphas = [parentAlpha, parentAlpha - 0.05, (parentAlpha - 0.45 == 0 && parentAlpha > 0) ? 0.25 : parentAlpha - 0.45];
-			statusBrightness = [1, 0.9, 0.75];
-			statusIndicatorType = BRIGHTNESS;
-			labelStatusDiff = 0.08;
-			indicateStatus();
-			solid = false;
-			immovable = true;
-			moves = false;
-			antialiasing = ClientPrefs.data.antialiasing;
-			label.antialiasing = ClientPrefs.data.antialiasing;
-			tag = labelGraphic.toUpperCase();
-		}
 	}
 }
