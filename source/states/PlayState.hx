@@ -963,6 +963,7 @@ class PlayState extends MusicBeatState
 
 	public function startCountdown()
 	{
+		mobileControls.visible = true;
 		if(startedCountdown) {
 			callOnScripts('onStartCountdown');
 			return false;
@@ -1589,6 +1590,7 @@ class PlayState extends MusicBeatState
 			FlxTween.globalManager.forEach(function(twn:FlxTween) if(!twn.finished) twn.active = true);
 
 			paused = false;
+			mobileControls.visible = #if !android virtualPad.visible = #end true;
 			callOnScripts('onResume');
 			resetRPC(startTimer != null && startTimer.finished);
 		}
@@ -1681,7 +1683,7 @@ class PlayState extends MusicBeatState
 			botplayTxt.alpha = 1 - Math.sin((Math.PI * botplaySine) / 180);
 		}
 
-		if (controls.PAUSE && startedCountdown && canPause)
+		if (controls.PAUSE #if android || FlxG.android.justReleased.BACK #else || virtualPad.buttonP.justPressed #end && startedCountdown && canPause)
 		{
 			var ret:Dynamic = callOnScripts('onPause', null, true);
 			if(ret != LuaUtils.Function_Stop) {
@@ -1895,6 +1897,7 @@ class PlayState extends MusicBeatState
 		persistentUpdate = false;
 		persistentDraw = true;
 		paused = true;
+		mobileControls.visible = #if !android virtualPad.visible = #end false;
 
 		if(FlxG.sound.music != null) {
 			FlxG.sound.music.pause();
@@ -2372,6 +2375,7 @@ class PlayState extends MusicBeatState
 
 		deathCounter = 0;
 		seenCutscene = false;
+		mobileControls.visible = #if !android virtualPad.visible = #end false;
 
 		#if ACHIEVEMENTS_ALLOWED
 		var weekNoMiss:String = WeekData.getWeekFileName() + '_nomiss';
