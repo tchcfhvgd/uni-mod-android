@@ -62,6 +62,7 @@ jobs:
           haxelib install hscript
           haxelib git SScript https://github.com/MobilePorting/SScript-Base
           haxelib install hxCodec
+          haxelib git flxanimate https://github.com/beihu235/flxanimate
           haxelib git linc_luajit https://github.com/mcagabe19/linc_luajit-legacy.git
           haxelib install extension-androidtools
           haxelib install hxcpp-debug-server
