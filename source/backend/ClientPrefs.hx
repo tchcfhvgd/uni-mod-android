@@ -14,8 +14,8 @@ import states.InitState;
 	
 	public var downScroll:Bool = false;
 	public var middleScroll:Bool = false;
-	public var hitbox2:Bool = true; // hitbox extra button position option
-	public var dynamicColors:Bool = true;
+	public var hitbox2:Bool = false; // hitbox extra button position option
+	public var dynamicColors:Bool = false;
 	public var controlsAlpha:Float = #if (mobile || mobileC) 0.6 #else 0.001 #end;
 	public var opponentStrums:Bool = true;
 	public var showFPS:Bool = true;
