@@ -16,7 +16,7 @@ import states.InitState;
 	public var middleScroll:Bool = false;
 	public var hitbox2:Bool = true; // hitbox extra button position option
 	public var dynamicColors:Bool = true;
-	public var controlsAlpha:Float = FlxG.onMobile ? 0.6 : 0;
+	public var controlsAlpha:Float = #if (mobile || mobileC) 0.6 #else 0.001 #end;
 	public var opponentStrums:Bool = true;
 	public var showFPS:Bool = true;
 	public var flashing:Bool = true;
