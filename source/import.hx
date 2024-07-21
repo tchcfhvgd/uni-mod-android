@@ -10,6 +10,15 @@ import llua.*;
 import llua.Lua;
 #end
 
+//Mobile Controls
+import mobile.objects.MobileControls;
+import mobile.flixel.FlxHitbox;
+import mobile.flixel.FlxVirtualPad;
+import mobile.flixel.input.FlxMobileInputID;
+import mobile.backend.MobileData;
+import mobile.backend.SUtil;
+import mobile.backend.SwipeUtil;
+  
 #if ACHIEVEMENTS_ALLOWED
 import backend.Achievements;
 #end
