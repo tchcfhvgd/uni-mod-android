@@ -3,11 +3,12 @@ package backend;
 import flixel.util.FlxSave;
 import flixel.input.keyboard.FlxKey;
 import flixel.input.gamepad.FlxGamepadInputID;
-import states.TitleState;
+import states.InitState;
 
 // Add a variable here and it will get automatically saved
 @:structInit class SaveVariables {
-        // Mobile Controls Releated
+        public var skipSplash:Bool = false;
+	// Mobile Controls Releated
 	public var extraButtons:String = "NONE"; // mobile extra button option
 	public var hitbox2:Bool = true; // hitbox extra button position option
 	public var dynamicColors:Bool = true; // yes cause its cool -Karim
@@ -84,6 +85,14 @@ import states.TitleState;
 	public var safeFrames:Float = 10;
 	public var guitarHeroSustains:Bool = true;
 	public var discordRPC:Bool = true;
+	// -- AUDIO SAVE VARIABLES -- //
+
+	public var musicVolume:Float = 1;
+	public var soundVolume:Float = 1;
+	public var instVolume:Float = 1;
+	public var voicesVolume:Float = 1;
+	public var hitsoundVolume:Float = 0;
+	public var missSounds:Bool = true;
 }
 
 class ClientPrefs {
@@ -113,9 +122,7 @@ class ClientPrefs {
 		'volume_down'	=> [NUMPADMINUS, MINUS],
 		
 		'debug_1'		=> [SEVEN],
-		'debug_2'		=> [EIGHT],
-		
-		'fullscreen'	=> [F11]
+		'debug_2'		=> [EIGHT]
 	];
 	public static var gamepadBinds:Map<String, Array<FlxGamepadInputID>> = [
 		'note_up'		=> [DPAD_UP, Y],
@@ -281,15 +288,15 @@ class ClientPrefs {
 
 	public static function reloadVolumeKeys()
 	{
-		TitleState.muteKeys = keyBinds.get('volume_mute').copy();
-		TitleState.volumeDownKeys = keyBinds.get('volume_down').copy();
-		TitleState.volumeUpKeys = keyBinds.get('volume_up').copy();
+		InitState.muteKeys = keyBinds.get('volume_mute').copy();
+		InitState.volumeDownKeys = keyBinds.get('volume_down').copy();
+	        InitState.volumeUpKeys = keyBinds.get('volume_up').copy();
 		toggleVolumeKeys(true);
 	}
 	public static function toggleVolumeKeys(?turnOn:Bool = true)
 	{
-		FlxG.sound.muteKeys = turnOn ? TitleState.muteKeys : [];
-		FlxG.sound.volumeDownKeys = turnOn ? TitleState.volumeDownKeys : [];
-		FlxG.sound.volumeUpKeys = turnOn ? TitleState.volumeUpKeys : [];
+		FlxG.sound.muteKeys = turnOn ? InitState.muteKeys : [];
+		FlxG.sound.volumeDownKeys = turnOn ? InitState.volumeDownKeys : [];
+		FlxG.sound.volumeUpKeys = turnOn ? InitState.volumeUpKeys : [];
 	}
 }
