@@ -103,7 +103,7 @@ class CreditsState extends MusicBeatState
         dustyAssCryfurQuote.visible = false;
         add(dustyAssCryfurQuote);
 
-        var ctrlText = new FlxText(0, FlxG.height-35, 0, "Press A/CTRL for the special thanks", 30);
+        var ctrlText = new FlxText(0, FlxG.height-35, 0, "Press C for the special thanks", 30);
         ctrlText.font = Paths.font('vcr.ttf');
         add(ctrlText);
         ctrlText.x = FlxG.width - ctrlText.width -5;
@@ -135,8 +135,7 @@ class CreditsState extends MusicBeatState
             trans = true;
         }
 
-        addVirtualPad(NONE, A);
-	addVirtualPadCamera(false);
+        addVirtualPad(NONE, A_B_C);
 	    
 	super.create();
     }
@@ -149,11 +148,11 @@ class CreditsState extends MusicBeatState
                 changeItem(-1);
             if (controls.UI_DOWN_P)
                 changeItem(1);
-            if (controls.BACK #if android || FlxG.android.justReleased.BACK #end)
+            if (controls.BACK)
                 MusicBeatState.switchState(new MainMenuState());
             if (controls.ACCEPT)
                 openLink();
-            if (FlxG.keys.justPressed.CONTROL || virtualPad.buttonA.justPressed)
+            if (FlxG.keys.justPressed.CONTROL || virtualPad.buttonC.justPressed)
             {
                 persistentUpdate = false;
                 openSubState(new SpecialThanksSubState());
