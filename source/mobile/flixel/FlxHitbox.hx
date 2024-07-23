@@ -36,6 +36,12 @@ class FlxHitbox extends FlxMobileInputManager
 			if (Std.isOfType(Reflect.field(this, button), FlxButton))
 				storedButtonsIDs.set(button, Reflect.getProperty(Reflect.field(this, button), 'IDs'));
 		}
+
+		for (button in Reflect.fields(this))
+		{
+			if (Std.isOfType(Reflect.field(this, button), FlxButton))
+				Reflect.setProperty(Reflect.getProperty(this, button), 'IDs', storedButtonsIDs.get(button));
+		}
 		scrollFactor.set();
 		updateTrackedButtons();
 	}
