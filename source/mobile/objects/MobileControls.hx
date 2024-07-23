@@ -62,7 +62,7 @@ class MobileControls extends FlxTypedSpriteGroup<FlxMobileInputManager>
 				virtualPad = new FlxVirtualPad(BOTH, NONE, extraAction);
 				add(virtualPad);
 			case 4:
-				hitbox = new FlxHitbox(extraAction);
+				hitbox = new FlxHitbox();
 				add(hitbox);
 		}
 	}
@@ -189,8 +189,6 @@ class CurrentManager {
 	public var buttonDown:FlxButton;
 	public var buttonUp:FlxButton;
 	public var buttonRight:FlxButton;
-	public var buttonExtra:FlxButton;
-	public var buttonExtra2:FlxButton;
 	public var target:FlxMobileInputManager;
 
 	public function new(control:MobileControls){
@@ -200,8 +198,6 @@ class CurrentManager {
 			buttonDown = control.hitbox.buttonDown;
 			buttonUp = control.hitbox.buttonUp;
 			buttonRight = control.hitbox.buttonRight;
-			buttonExtra = control.hitbox.buttonExtra;
-			buttonExtra2 = control.hitbox.buttonExtra2;
 		} else {
 			target = control.virtualPad;
 			buttonLeft = control.virtualPad.buttonLeft;
