@@ -204,8 +204,6 @@ class CurrentManager {
 			buttonDown = control.virtualPad.buttonDown;
 			buttonUp = control.virtualPad.buttonUp;
 			buttonRight = control.virtualPad.buttonRight;
-			buttonExtra = control.virtualPad.buttonExtra;
-			buttonExtra2 = control.virtualPad.buttonExtra2;
 		}
 	}
 }
