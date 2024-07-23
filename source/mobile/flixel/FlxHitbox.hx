@@ -21,15 +21,13 @@ class FlxHitbox extends FlxMobileInputManager
 	public var buttonDown:FlxButton = new FlxButton(0, 0, [FlxMobileInputID.hitboxDOWN, FlxMobileInputID.noteDOWN]);
 	public var buttonUp:FlxButton = new FlxButton(0, 0, [FlxMobileInputID.hitboxUP, FlxMobileInputID.noteUP]);
 	public var buttonRight:FlxButton = new FlxButton(0, 0, [FlxMobileInputID.hitboxRIGHT, FlxMobileInputID.noteRIGHT]);
-	public var buttonExtra:FlxButton = new FlxButton(0, 0);
-	public var buttonExtra2:FlxButton = new FlxButton(0, 0);
 
 	var storedButtonsIDs:Map<String, Array<FlxMobileInputID>> = new Map<String, Array<FlxMobileInputID>>();
 
 	/**
 	 * Create the zone.
 	 */
-	public function new(extraMode:ExtraActions)
+	public function new()
 	{
 		super();
 
@@ -37,36 +35,6 @@ class FlxHitbox extends FlxMobileInputManager
 		{
 			if (Std.isOfType(Reflect.field(this, button), FlxButton))
 				storedButtonsIDs.set(button, Reflect.getProperty(Reflect.field(this, button), 'IDs'));
-		}
-
-		switch (extraMode)
-		{
-			case NONE:
-				add(buttonLeft = createHint(0, 0, Std.int(FlxG.width / 4), FlxG.height, 0xFFC24B99));
-				add(buttonDown = createHint(FlxG.width / 4, 0, Std.int(FlxG.width / 4), FlxG.height, 0xFF00FFFF));
-				add(buttonUp = createHint(FlxG.width / 2, 0, Std.int(FlxG.width / 4), FlxG.height, 0xFF12FA05));
-				add(buttonRight = createHint((FlxG.width / 2) + (FlxG.width / 4), 0, Std.int(FlxG.width / 4), FlxG.height, 0xFFF9393F));
-			case SINGLE:
-				add(buttonLeft = createHint(0, offsetSec, Std.int(FlxG.width / 4), Std.int(FlxG.height / 4) * 3, 0xFFC24B99));
-				add(buttonDown = createHint(FlxG.width / 4, offsetSec, Std.int(FlxG.width / 4), Std.int(FlxG.height / 4) * 3, 0xFF00FFFF));
-				add(buttonUp = createHint(FlxG.width / 2, offsetSec, Std.int(FlxG.width / 4), Std.int(FlxG.height / 4) * 3, 0xFF12FA05));
-				add(buttonRight = createHint((FlxG.width / 2) + (FlxG.width / 4), offsetSec, Std.int(FlxG.width / 4), Std.int(FlxG.height / 4) * 3,
-					0xFFF9393F));
-				add(buttonExtra = createHint(0, offsetFir, FlxG.width, Std.int(FlxG.height / 4), 0xFF0066FF));
-			case DOUBLE:
-				add(buttonLeft = createHint(0, offsetSec, Std.int(FlxG.width / 4), Std.int(FlxG.height / 4) * 3, 0xFFC24B99));
-				add(buttonDown = createHint(FlxG.width / 4, offsetSec, Std.int(FlxG.width / 4), Std.int(FlxG.height / 4) * 3, 0xFF00FFFF));
-				add(buttonUp = createHint(FlxG.width / 2, offsetSec, Std.int(FlxG.width / 4), Std.int(FlxG.height / 4) * 3, 0xFF12FA05));
-				add(buttonRight = createHint((FlxG.width / 2) + (FlxG.width / 4), offsetSec, Std.int(FlxG.width / 4), Std.int(FlxG.height / 4) * 3,
-					0xFFF9393F));
-				add(buttonExtra2 = createHint(Std.int(FlxG.width / 2), offsetFir, Std.int(FlxG.width / 2), Std.int(FlxG.height / 4), 0xA6FF00));
-				add(buttonExtra = createHint(0, offsetFir, Std.int(FlxG.width / 2), Std.int(FlxG.height / 4), 0xFF0066FF));
-		}
-
-		for (button in Reflect.fields(this))
-		{
-			if (Std.isOfType(Reflect.field(this, button), FlxButton))
-				Reflect.setProperty(Reflect.getProperty(this, button), 'IDs', storedButtonsIDs.get(button));
 		}
 		scrollFactor.set();
 		updateTrackedButtons();
@@ -83,10 +51,8 @@ class FlxHitbox extends FlxMobileInputManager
 		buttonDown = FlxDestroyUtil.destroy(buttonDown);
 		buttonUp = FlxDestroyUtil.destroy(buttonUp);
 		buttonRight = FlxDestroyUtil.destroy(buttonRight);
-		buttonExtra = FlxDestroyUtil.destroy(buttonExtra);
-		buttonExtra2 = FlxDestroyUtil.destroy(buttonExtra2);
 	}
-
+	
 	private function createHint(X:Float, Y:Float, Width:Int, Height:Int, Color:Int = 0xFFFFFF):FlxButton
 	{
 		var hintTween:FlxTween = null;
