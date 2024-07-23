@@ -88,6 +88,9 @@ class Jumpscare extends MusicBeatSubstate
             });
         });
 
+        addVirtualPad(NONE, A_B);
+	addVirtualPadCamera(false);
+	    
         super.create();
     }
     
