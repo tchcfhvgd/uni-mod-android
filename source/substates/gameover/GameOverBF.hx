@@ -49,7 +49,10 @@ class GameOverBF extends MusicBeatSubstate
             FlxTween.tween(selector, {alpha:1}, 0.4, {ease:FlxEase.quadInOut});
         });
 
-        super.create();
+        addVirtualPad(UP_DOWN, A);
+	addVirtualPadCamera(false);
+	    
+	super.create();
     }
 
     public var startedDeath:Bool = false;
