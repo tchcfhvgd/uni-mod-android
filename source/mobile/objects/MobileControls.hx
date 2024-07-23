@@ -9,7 +9,7 @@ import mobile.flixel.FlxButton;
 class MobileControls extends FlxTypedSpriteGroup<FlxMobileInputManager>
 {
 	public var virtualPad:FlxVirtualPad = new FlxVirtualPad(NONE, NONE, NONE);
-	public var hitbox:FlxHitbox = new FlxHitbox(NONE);
+	public var hitbox:FlxHitbox = new FlxHitbox();
 	// YOU CAN'T CHANGE PROPERTIES USING THIS EXCEPT WHEN IN RUNTIME!!
 	public var current:CurrentManager;
 
