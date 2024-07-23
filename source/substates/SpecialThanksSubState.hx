@@ -26,7 +26,7 @@ class SpecialThanksSubState extends MusicBeatSubstate
 
     override function update(elapsed:Float) 
     {
-        if (FlxG.keys.justPressed.ESCAPE) {
+        if (FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justReleased.BACK #end) {
             FlxTween.tween(spr, {alpha: 0}, 0.8, {ease: FlxEase.expoInOut});
             FlxTween.tween(txt, {alpha: 0}, 0.8, {ease: FlxEase.expoInOut, 
                 onComplete: function(twn:FlxTween) {
